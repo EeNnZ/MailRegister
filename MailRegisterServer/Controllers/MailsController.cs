@@ -27,43 +27,50 @@ namespace MailRegisterServer.Controllers
 #endif
         // GET: api/Mails
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Mail>>> GetMail()
+        public async Task<ActionResult<IEnumerable<MailViewModel>>> GetMail()
         {
-          if (_context.Mail == null)
-          {
-              return NotFound();
-          }
-            return await _context.Mail.ToListAsync();
+            if (_context.Mail == null)
+            {
+                return NotFound();
+            }
+            var mails = await _context.Mail
+                .Include(mail => mail.Addressee)
+                .Include(mail => mail.Sender)
+                .ToListAsync();
+            var vms = mails.Select(m => m.ToViewModel()).ToList();
+            return vms;
         }
 
         // GET: api/Mails/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Mail>> GetMail(int id)
+        public async Task<ActionResult<MailViewModel>> GetMail(int id)
         {
-          if (_context.Mail == null)
-          {
-              return NotFound();
-          }
-            var mail = await _context.Mail.FindAsync(id);
+            if (_context.Mail == null)
+            {
+                return NotFound();
+            }
+            var mail = await _context.Mail
+                .Include(mail => mail.Addressee)
+                .Include(mail => mail.Sender)
+                .FirstOrDefaultAsync(m => m.Id == id);
 
             if (mail == null)
             {
                 return NotFound();
             }
 
-            return mail;
+            return mail.ToViewModel();
         }
 
         // PUT: api/Mails/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMail(int id, Mail mail)
+        public async Task<IActionResult> PutMail(int id, MailViewModel mail)
         {
             if (id != mail.Id)
             {
                 return BadRequest();
             }
-
             _context.Entry(mail).State = EntityState.Modified;
 
             try
@@ -88,13 +95,14 @@ namespace MailRegisterServer.Controllers
         // POST: api/Mails
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Mail>> PostMail(Mail mail)
+        public async Task<ActionResult<MailViewModel>> PostMail(MailViewModel mail)
         {
-          if (_context.Mail == null)
-          {
-              return Problem("Entity set 'CompanyDbContext.Mail'  is null.");
-          }
-            _context.Mail.Add(mail);
+            if (_context.Mail == null)
+            {
+                return Problem("Entity set 'CompanyDbContext.Mail'  is null.");
+            }
+
+            _context.Mail.Add(mail.AsModel());
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetMail", new { id = mail.Id }, mail);

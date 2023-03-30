@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MailRegisterServer.Entities;
 
-public partial class Employee
+public class Employee
 {
     public int Id { get; set; }
     public int? Age { get; set; }
@@ -12,6 +12,6 @@ public partial class Employee
     public string LastName { get; set; } = null!;
     public string JobTitle { get; set; } = null!;
     public Guid Rowguid { get; set; }
-    public virtual ICollection<Mail> MailRecieved { get; } = new List<Mail>();
-    public virtual ICollection<Mail> MailSent { get; } = new List<Mail>();
+    public virtual ICollection<Mail> MailRecieved { get; }
+    public virtual ICollection<Mail> MailSent { get; }
 }
