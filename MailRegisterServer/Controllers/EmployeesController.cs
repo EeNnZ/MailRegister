@@ -16,17 +16,10 @@ namespace MailRegisterServer.Controllers
     {
         private readonly CompanyDbContext _context;
 
-#if !DEBUG
         public EmployeesController(CompanyDbContext context)
         {
             _context = context;
         }
-#else
-        public EmployeesController()
-        {
-            _context = new CompanyDbContext();
-        }
-#endif
 
         // GET: api/Employees
         [HttpGet]

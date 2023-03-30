@@ -14,17 +14,10 @@ namespace MailRegisterServer.Controllers
     public class MailsController : ControllerBase
     {
         private readonly CompanyDbContext _context;
-#if !DEBUG
         public MailsController(CompanyDbContext context)
         {
             _context = context;
         }
-#else
-        public MailsController()
-        {
-            _context = new CompanyDbContext();
-        }
-#endif
         // GET: api/Mails
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MailViewModel>>> GetMail()
