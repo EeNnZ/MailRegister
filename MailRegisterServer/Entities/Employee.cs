@@ -14,4 +14,9 @@ public class Employee
     public Guid Rowguid { get; set; }
     public virtual ICollection<Mail> MailRecieved { get; }
     public virtual ICollection<Mail> MailSent { get; }
+
+    public override string ToString()
+    {
+        return $"{JobTitle} - {FirstName} {MiddleName ?? ""} {LastName}";
+    }
 }

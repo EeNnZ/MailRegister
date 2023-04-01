@@ -64,7 +64,13 @@ namespace MailRegisterServer.Controllers
             {
                 return BadRequest();
             }
-            _context.Entry(mail).State = EntityState.Modified;
+            var existedMail = _context.Mail.FirstOrDefault(m => m.Id == id);
+            if (existedMail == null) 
+            {
+                return  NotFound(); 
+            }
+            _context.Entry(existedMail).CurrentValues.SetValues(mail.AsModel());
+            _context.Entry(existedMail).State = EntityState.Modified;
 
             try
             {

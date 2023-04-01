@@ -20,5 +20,10 @@
         public string LastName { get; set; } = null!;
         public string JobTitle { get; set; } = null!;
         public Guid Rowguid { get; set; }
+
+        public override string ToString()
+        {
+            return $"{JobTitle} - {FirstName} {MiddleName ?? ""} {LastName}";
+        }
     }
 }
