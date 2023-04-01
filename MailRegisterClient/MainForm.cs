@@ -18,40 +18,8 @@ namespace MailRegisterClient
             _mails = new();
             _employees = new();
 
-            FillDataGridView();
+            Load += MainForm_LoadAsync;
 
-        }
-
-        private void FillDataGridView()
-        {
-            //TODO: REWRITE THIS SHIT
-            registerButton.Enabled = false;
-            modifyButton.Enabled = false;
-            deleteButton.Enabled = false;
-
-            toolStripStatusLabel.Text = "Updating mail list...";
-
-            Task.Run(() =>
-            {
-                _mails = GetMails().Result.ToList();
-                _employees = GetEmployees().Result.ToDictionary(x => x.Key, x => x.Value);
-            }).Wait();
-
-            dataGridView.DataSource = _mails
-            .Select(mail => new
-            {
-                mail.Id,
-                mail.Name,
-                mail.Date,
-                mail.Body,
-                Addressee = mail.Addressee?.ToString(),
-                Sender = mail.Sender?.ToString()
-            }).ToList();
-            dataGridView.Columns["Id"].Visible = false;
-            toolStripStatusLabel.Text = "Ready";
-            registerButton.Enabled = true;
-            modifyButton.Enabled = true;
-            deleteButton.Enabled = true;
         }
 
         #region CRUD
@@ -249,6 +217,58 @@ namespace MailRegisterClient
             var opResult = await DeleteMail(id);
             FillDataGridView();
             toolStripStatusLabel.Text = opResult.ToString();
+        }
+        #endregion
+
+        #region Methods
+        private async void MainForm_LoadAsync(object? sender, EventArgs e)
+        {
+            toolStripStatusLabel.Text = "Updating mail list...";
+            await InitializeLocalCollectoins();
+            FillDataGridView();
+        }
+
+        private async Task InitializeLocalCollectoins()
+        {
+            var employees = GetEmployees();
+            var mails = await GetMails();
+
+            _mails = mails.ToList();
+            _employees = (await employees).ToDictionary(x => x.Key, x => x.Value);
+        }
+
+        private void FillDataGridView()
+        {
+            DisableButtons();
+
+            dataGridView.DataSource = _mails
+            .Select(mail => new
+            {
+                mail.Id,
+                mail.Name,
+                mail.Date,
+                mail.Body,
+                Addressee = mail.Addressee?.ToString(),
+                Sender = mail.Sender?.ToString()
+            }).ToList();
+            dataGridView.Columns["Id"].Visible = false;
+
+            toolStripStatusLabel.Text = "Ready";
+
+            EnableButtons();
+        }
+
+        private void EnableButtons()
+        {
+            registerButton.Enabled = true;
+            modifyButton.Enabled = true;
+            deleteButton.Enabled = true;
+        }
+        private void DisableButtons()
+        {
+            registerButton.Enabled = false;
+            modifyButton.Enabled = false;
+            deleteButton.Enabled = false;
         }
         #endregion
     }
