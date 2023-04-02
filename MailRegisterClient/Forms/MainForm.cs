@@ -1,25 +1,86 @@
+using MailRegisterClient.Forms;
 using MailRegisterServer.Entities;
-using MessagePack.Formatters;
-using Newtonsoft.Json;
 using NuGet.Common;
 using System.Net;
+using System.Text.Json;
 
 namespace MailRegisterClient
 {
     public partial class MainForm : Form
     {
+        private const string DraftsFolderName = "Drafts";
+
+        private string _draftsFolder;
+        private string _workingDirectory;
+
+        private List<MailViewModel> _drafts;
         private List<MailViewModel> _mails;
+
         private Dictionary<int, string> _employees;
 
         public MainForm()
         {
             InitializeComponent();
 
+            _workingDirectory = Directory.GetCurrentDirectory();
+            _draftsFolder = Path.Combine(_workingDirectory, DraftsFolderName);
+
+            _drafts = LoadDrafts();
             _mails = new();
             _employees = new();
 
             Load += MainForm_LoadAsync;
+            FormClosed += MainForm_FormClosed;
 
+        }
+
+        private void MainForm_FormClosed(object? sender, FormClosedEventArgs e)
+        {
+            if (_drafts.Any())
+            {
+                SaveDrafts();
+            }
+        }
+        private void SaveDrafts()
+        {
+            if (!Directory.Exists(_draftsFolder))
+            {
+                Directory.CreateDirectory(_draftsFolder);
+            }
+
+            foreach (var draft in _drafts)
+            {
+                string serialized = JsonSerializer.Serialize(draft, new JsonSerializerOptions() { WriteIndented = true });
+                File.WriteAllText(Path.Combine(_workingDirectory, DraftsFolderName, $"{draft.Name}_draft.json"), serialized);
+            }
+        }
+        private List<MailViewModel> LoadDrafts()
+        {
+            var deserializedDrafts = new List<MailViewModel>();
+
+            var jsonFilePaths = Directory.EnumerateFiles(_draftsFolder);
+            int filesCount = jsonFilePaths.Count();
+
+            int successDeserialized = 0;
+            foreach (var path in jsonFilePaths)
+            {
+                string jsonContent = File.ReadAllText(path);
+                var deserialized = JsonSerializer.Deserialize<MailViewModel>(jsonContent);
+                if (deserialized != null)
+                {
+                    deserializedDrafts.Add(deserialized);
+                    successDeserialized++;
+                }
+            }
+
+            if (filesCount != successDeserialized)
+            {
+                MessageBox.Show($"{filesCount - successDeserialized} files cannot be deserialized. Check if .json is malformed",
+                                "Error",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
+            }
+            return deserializedDrafts;
         }
 
         #region CRUD
@@ -166,8 +227,17 @@ namespace MailRegisterClient
                                     mailForm.bodyTextBox.Text,
                                     mailForm.addresseeComboBox.SelectedIndex + 1,
                                     mailForm.senderComboBox.SelectedIndex + 1);
+
+            if (formResult == DialogResult.Abort)
+            {
+                var viewmodel = newMail.ToViewModel();
+                _drafts.Add(viewmodel);
+                MessageBox.Show("Draft will be saved to folder when application closes", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
             var opResult = await RegisterMail(newMail);
-            FillDataGridView();
+            await UpdateDataGridViewAsyncTask();
             toolStripStatusLabel.Text = opResult.ToString();
         }
 
@@ -196,8 +266,16 @@ namespace MailRegisterClient
             selectedMail.Body = mailForm.bodyTextBox.Text;
             selectedMail.AddresseeId = mailForm.addresseeComboBox.SelectedIndex + 1;
             selectedMail.SenderId = mailForm.senderComboBox.SelectedIndex + 1;
+
+            if (formResult == DialogResult.Abort)
+            {
+                _drafts.Add(selectedMail);
+                MessageBox.Show("Draft will be saved to folder when application closes", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
             var opResult = await ModifyMail(id, selectedMail);
-            FillDataGridView();
+            await UpdateDataGridViewAsyncTask();
             toolStripStatusLabel.Text = opResult.ToString();
         }
 
@@ -215,8 +293,49 @@ namespace MailRegisterClient
             if (!idFound || selectedMail is null) return;
 
             var opResult = await DeleteMail(id);
-            FillDataGridView();
+            await UpdateDataGridViewAsyncTask();
             toolStripStatusLabel.Text = opResult.ToString();
+        }
+
+        private async void checkDraftsButton_Click(object sender, EventArgs e)
+        {
+            DraftsForm draftsForm = new DraftsForm(_drafts);
+            var formResult = draftsForm.ShowDialog(this);
+
+            if (formResult == DialogResult.OK)
+            {
+                var draft = draftsForm.SelectedViewModel;
+                if (draft == null)
+                {
+                    //TODO: Handle null
+                    return;
+                }
+                //TODO: Code duplication here
+                EditForm regForm = new(draft.Name, draft.Date, draft.SenderId, draft.AddresseeId, draft.Body, _employees);
+                var editFormResult = regForm.ShowDialog(this);
+                if (editFormResult == DialogResult.Cancel)
+                {
+                    regForm.Close();
+                    return;
+                }
+                Mail newMail = new Mail(regForm.nameTextBox.Text,
+                                    regForm.dateTimePicker.Value,
+                                    regForm.bodyTextBox.Text,
+                                    regForm.addresseeComboBox.SelectedIndex + 1,
+                                    regForm.senderComboBox.SelectedIndex + 1);
+                    
+                if (editFormResult == DialogResult.Abort)
+                {
+                    var viewmodel = newMail.ToViewModel();
+                    _drafts.Add(viewmodel);
+                    MessageBox.Show("Draft will be saved to folder when application closes", "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                var opResult = await RegisterMail(newMail);
+                await UpdateDataGridViewAsyncTask();
+                toolStripStatusLabel.Text = opResult.ToString();
+            }
         }
         #endregion
 
@@ -224,6 +343,11 @@ namespace MailRegisterClient
         private async void MainForm_LoadAsync(object? sender, EventArgs e)
         {
             toolStripStatusLabel.Text = "Updating mail list...";
+            await UpdateDataGridViewAsyncTask();
+        }
+
+        private async Task UpdateDataGridViewAsyncTask()
+        {
             await InitializeLocalCollectoins();
             FillDataGridView();
         }

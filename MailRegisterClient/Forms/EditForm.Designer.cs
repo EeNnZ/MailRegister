@@ -40,6 +40,7 @@
             labelName = new Label();
             bodyTextBox = new TextBox();
             confirmButton = new Button();
+            draftButton = new Button();
             groupBox.SuspendLayout();
             SuspendLayout();
             // 
@@ -158,11 +159,23 @@
             confirmButton.Text = "Confirm";
             confirmButton.UseVisualStyleBackColor = true;
             // 
+            // draftButton
+            // 
+            draftButton.DialogResult = DialogResult.Abort;
+            draftButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
+            draftButton.Location = new Point(285, 454);
+            draftButton.Name = "draftButton";
+            draftButton.Size = new Size(101, 45);
+            draftButton.TabIndex = 3;
+            draftButton.Text = "Save as draft";
+            draftButton.UseVisualStyleBackColor = true;
+            // 
             // EditForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(505, 511);
+            Controls.Add(draftButton);
             Controls.Add(confirmButton);
             Controls.Add(groupBox);
             Name = "EditForm";
@@ -185,5 +198,6 @@
         internal protected ComboBox addresseeComboBox;
         internal protected ComboBox senderComboBox;
         internal protected DateTimePicker dateTimePicker;
+        private Button draftButton;
     }
 }
