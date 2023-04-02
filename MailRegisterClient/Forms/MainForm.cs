@@ -8,6 +8,7 @@ namespace MailRegisterClient
 {
     public partial class MainForm : Form
     {
+        #region Fields
         private const string DraftsFolderName = "Drafts";
 
         private string _draftsFolder;
@@ -17,6 +18,7 @@ namespace MailRegisterClient
         private List<MailViewModel> _mails;
 
         private Dictionary<int, string> _employees;
+        #endregion
 
         public MainForm()
         {
@@ -34,13 +36,7 @@ namespace MailRegisterClient
 
         }
 
-        private void MainForm_FormClosed(object? sender, FormClosedEventArgs e)
-        {
-            if (_drafts.Any())
-            {
-                SaveDrafts();
-            }
-        }
+        #region drafts
         private void SaveDrafts()
         {
             if (!Directory.Exists(_draftsFolder))
@@ -56,6 +52,11 @@ namespace MailRegisterClient
         }
         private List<MailViewModel> LoadDrafts()
         {
+            if (!Directory.Exists(_draftsFolder))
+            {
+                Directory.CreateDirectory(_draftsFolder);
+            }
+
             var deserializedDrafts = new List<MailViewModel>();
 
             var jsonFilePaths = Directory.EnumerateFiles(_draftsFolder);
@@ -82,6 +83,7 @@ namespace MailRegisterClient
             }
             return deserializedDrafts;
         }
+        #endregion
 
         #region CRUD
 
@@ -339,13 +341,22 @@ namespace MailRegisterClient
         }
         #endregion
 
-        #region Methods
+        #region form events handlers
         private async void MainForm_LoadAsync(object? sender, EventArgs e)
         {
             toolStripStatusLabel.Text = "Updating mail list...";
             await UpdateDataGridViewAsyncTask();
         }
+        private void MainForm_FormClosed(object? sender, FormClosedEventArgs e)
+        {
+            if (_drafts.Any())
+            {
+                SaveDrafts();
+            }
+        }
+        #endregion
 
+        #region DataGrid methods
         private async Task UpdateDataGridViewAsyncTask()
         {
             await InitializeLocalCollectoins();
@@ -354,6 +365,8 @@ namespace MailRegisterClient
 
         private async Task InitializeLocalCollectoins()
         {
+            DisableButtons();
+
             var employees = GetEmployees();
             var mails = await GetMails();
 
@@ -363,8 +376,6 @@ namespace MailRegisterClient
 
         private void FillDataGridView()
         {
-            DisableButtons();
-
             dataGridView.DataSource = _mails
             .Select(mail => new
             {
@@ -381,7 +392,9 @@ namespace MailRegisterClient
 
             EnableButtons();
         }
+        #endregion
 
+        #region controls
         private void EnableButtons()
         {
             registerButton.Enabled = true;
