@@ -1,6 +1,5 @@
 using MailRegisterClient.Forms;
 using MailRegisterServer.Entities;
-using NuGet.Common;
 using System.Net;
 using System.Text.Json;
 
@@ -325,7 +324,7 @@ namespace MailRegisterClient
                                     regForm.bodyTextBox.Text,
                                     regForm.addresseeComboBox.SelectedIndex + 1,
                                     regForm.senderComboBox.SelectedIndex + 1);
-                    
+
                 if (editFormResult == DialogResult.Abort)
                 {
                     var viewmodel = newMail.ToViewModel();

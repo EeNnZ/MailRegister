@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using MailRegisterServer.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MailRegisterServer.Entities;
 
 namespace MailRegisterServer.Controllers
 {
@@ -65,9 +60,9 @@ namespace MailRegisterServer.Controllers
                 return BadRequest();
             }
             var existedMail = _context.Mail.FirstOrDefault(m => m.Id == id);
-            if (existedMail == null) 
+            if (existedMail == null)
             {
-                return  NotFound(); 
+                return NotFound();
             }
             _context.Entry(existedMail).CurrentValues.SetValues(mail.AsModel());
             _context.Entry(existedMail).State = EntityState.Modified;

@@ -112,7 +112,7 @@
             // 
             checkDraftsButton.BackColor = SystemColors.Control;
             checkDraftsButton.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            checkDraftsButton.Location = new Point(885, 195);
+            checkDraftsButton.Location = new Point(885, 477);
             checkDraftsButton.Name = "checkDraftsButton";
             checkDraftsButton.Size = new Size(93, 39);
             checkDraftsButton.TabIndex = 5;

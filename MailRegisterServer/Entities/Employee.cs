@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace MailRegisterServer.Entities;
+﻿namespace MailRegisterServer.Entities;
 
 public class Employee
 {

@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
-
-namespace MailRegisterServer.Entities
+﻿namespace MailRegisterServer.Entities
 {
     public class MailViewModel
     {

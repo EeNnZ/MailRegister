@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using MailRegisterServer.Entities;
+﻿using MailRegisterServer.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace MailRegisterServer;
