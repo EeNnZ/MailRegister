@@ -10,21 +10,31 @@ namespace MailRegisterClient
         #region Fields
         private const string DraftsFolderName = "Drafts";
 
-        private string _draftsFolder;
-        private string _workingDirectory;
-
         private List<MailViewModel> _drafts;
         private List<MailViewModel> _mails;
 
         private Dictionary<int, string> _employees;
         #endregion
 
+        #region Props
+        public string WorkingDirectory => Directory.GetCurrentDirectory();
+        public string DraftsFolder
+        {
+            get
+            {
+                string folder = Path.Combine(WorkingDirectory, DraftsFolderName);
+                if (!Directory.Exists(folder))
+                {
+                    Directory.CreateDirectory(folder);
+                }
+                return folder;
+            }
+        }
+        #endregion
+
         public MainForm()
         {
             InitializeComponent();
-
-            _workingDirectory = Directory.GetCurrentDirectory();
-            _draftsFolder = Path.Combine(_workingDirectory, DraftsFolderName);
 
             _drafts = LoadDrafts();
             _mails = new();
@@ -38,34 +48,35 @@ namespace MailRegisterClient
         #region drafts
         private void SaveDrafts()
         {
-            if (!Directory.Exists(_draftsFolder))
-            {
-                Directory.CreateDirectory(_draftsFolder);
-            }
-
             foreach (var draft in _drafts)
             {
                 string serialized = JsonSerializer.Serialize(draft, new JsonSerializerOptions() { WriteIndented = true });
-                File.WriteAllText(Path.Combine(_workingDirectory, DraftsFolderName, $"{draft.Name}_draft.json"), serialized);
+
+                File.WriteAllText(Path.Combine(DraftsFolder, $"{draft.Name}_draft.json"), serialized);
             }
         }
         private List<MailViewModel> LoadDrafts()
         {
-            if (!Directory.Exists(_draftsFolder))
-            {
-                Directory.CreateDirectory(_draftsFolder);
-            }
-
             var deserializedDrafts = new List<MailViewModel>();
 
-            var jsonFilePaths = Directory.EnumerateFiles(_draftsFolder);
+            var jsonFilePaths = Directory.EnumerateFiles(DraftsFolder);
             int filesCount = jsonFilePaths.Count();
 
             int successDeserialized = 0;
             foreach (var path in jsonFilePaths)
             {
                 string jsonContent = File.ReadAllText(path);
-                var deserialized = JsonSerializer.Deserialize<MailViewModel>(jsonContent);
+
+                MailViewModel? deserialized;
+                try
+                {
+                    deserialized = JsonSerializer.Deserialize<MailViewModel>(jsonContent);
+                }
+                catch (JsonException jsonEx)
+                {
+                    continue;
+                }
+
                 if (deserialized != null)
                 {
                     deserializedDrafts.Add(deserialized);
