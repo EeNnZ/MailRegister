@@ -46,9 +46,11 @@
             // 
             // nameTextBox
             // 
+            nameTextBox.BackColor = Color.FromArgb(39, 49, 70);
+            nameTextBox.ForeColor = Color.WhiteSmoke;
             nameTextBox.Location = new Point(88, 32);
             nameTextBox.Name = "nameTextBox";
-            nameTextBox.Size = new Size(387, 23);
+            nameTextBox.Size = new Size(387, 27);
             nameTextBox.TabIndex = 0;
             // 
             // groupBox
@@ -63,36 +65,46 @@
             groupBox.Controls.Add(labelName);
             groupBox.Controls.Add(bodyTextBox);
             groupBox.Controls.Add(nameTextBox);
+            groupBox.Font = new Font("SF Pro Display", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            groupBox.ForeColor = Color.WhiteSmoke;
             groupBox.Location = new Point(12, 12);
             groupBox.Name = "groupBox";
-            groupBox.Size = new Size(481, 435);
+            groupBox.Size = new Size(606, 522);
             groupBox.TabIndex = 1;
             groupBox.TabStop = false;
             groupBox.Text = "Mail";
             // 
             // addresseeComboBox
             // 
+            addresseeComboBox.BackColor = Color.FromArgb(39, 49, 70);
+            addresseeComboBox.ForeColor = Color.WhiteSmoke;
             addresseeComboBox.FormattingEnabled = true;
             addresseeComboBox.Location = new Point(88, 207);
             addresseeComboBox.Name = "addresseeComboBox";
-            addresseeComboBox.Size = new Size(387, 23);
+            addresseeComboBox.Size = new Size(387, 27);
             addresseeComboBox.TabIndex = 12;
             // 
             // senderComboBox
             // 
+            senderComboBox.BackColor = Color.FromArgb(39, 49, 70);
+            senderComboBox.ForeColor = Color.WhiteSmoke;
             senderComboBox.FormattingEnabled = true;
             senderComboBox.Location = new Point(88, 149);
             senderComboBox.Name = "senderComboBox";
-            senderComboBox.Size = new Size(387, 23);
+            senderComboBox.Size = new Size(387, 27);
             senderComboBox.TabIndex = 11;
             // 
             // dateTimePicker
             // 
+            dateTimePicker.CalendarFont = new Font("SF Pro Display", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            dateTimePicker.CalendarForeColor = Color.WhiteSmoke;
+            dateTimePicker.CalendarMonthBackground = Color.FromArgb(39, 49, 70);
+            dateTimePicker.CalendarTitleForeColor = Color.WhiteSmoke;
             dateTimePicker.CustomFormat = "dd/MM/yyyy HH:mm";
             dateTimePicker.Format = DateTimePickerFormat.Custom;
             dateTimePicker.Location = new Point(88, 88);
             dateTimePicker.Name = "dateTimePicker";
-            dateTimePicker.Size = new Size(387, 23);
+            dateTimePicker.Size = new Size(387, 27);
             dateTimePicker.TabIndex = 10;
             // 
             // labelBody
@@ -100,7 +112,7 @@
             labelBody.AutoSize = true;
             labelBody.Location = new Point(6, 268);
             labelBody.Name = "labelBody";
-            labelBody.Size = new Size(34, 15);
+            labelBody.Size = new Size(44, 19);
             labelBody.TabIndex = 9;
             labelBody.Text = "Body";
             // 
@@ -109,7 +121,7 @@
             labelAddressee.AutoSize = true;
             labelAddressee.Location = new Point(6, 210);
             labelAddressee.Name = "labelAddressee";
-            labelAddressee.Size = new Size(61, 15);
+            labelAddressee.Size = new Size(80, 19);
             labelAddressee.TabIndex = 8;
             labelAddressee.Text = "Addressee";
             // 
@@ -118,7 +130,7 @@
             labelSender.AutoSize = true;
             labelSender.Location = new Point(6, 152);
             labelSender.Name = "labelSender";
-            labelSender.Size = new Size(43, 15);
+            labelSender.Size = new Size(57, 19);
             labelSender.TabIndex = 7;
             labelSender.Text = "Sender";
             // 
@@ -127,7 +139,7 @@
             labelDate.AutoSize = true;
             labelDate.Location = new Point(6, 94);
             labelDate.Name = "labelDate";
-            labelDate.Size = new Size(31, 15);
+            labelDate.Size = new Size(41, 19);
             labelDate.TabIndex = 6;
             labelDate.Text = "Date";
             // 
@@ -136,45 +148,51 @@
             labelName.AutoSize = true;
             labelName.Location = new Point(6, 36);
             labelName.Name = "labelName";
-            labelName.Size = new Size(39, 15);
+            labelName.Size = new Size(49, 19);
             labelName.TabIndex = 5;
             labelName.Text = "Name";
             // 
             // bodyTextBox
             // 
+            bodyTextBox.BackColor = Color.FromArgb(39, 49, 70);
             bodyTextBox.Location = new Point(88, 264);
             bodyTextBox.Multiline = true;
             bodyTextBox.Name = "bodyTextBox";
-            bodyTextBox.Size = new Size(387, 165);
+            bodyTextBox.Size = new Size(512, 252);
             bodyTextBox.TabIndex = 4;
             // 
             // confirmButton
             // 
+            confirmButton.BackColor = Color.FromArgb(61, 165, 244);
             confirmButton.DialogResult = DialogResult.OK;
-            confirmButton.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            confirmButton.Location = new Point(392, 454);
+            confirmButton.Font = new Font("SF Pro Display", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            confirmButton.ForeColor = Color.WhiteSmoke;
+            confirmButton.Location = new Point(490, 540);
             confirmButton.Name = "confirmButton";
-            confirmButton.Size = new Size(101, 45);
+            confirmButton.Size = new Size(128, 45);
             confirmButton.TabIndex = 2;
             confirmButton.Text = "Confirm";
-            confirmButton.UseVisualStyleBackColor = true;
+            confirmButton.UseVisualStyleBackColor = false;
             // 
             // draftButton
             // 
+            draftButton.BackColor = Color.FromArgb(61, 165, 244);
             draftButton.DialogResult = DialogResult.Abort;
-            draftButton.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            draftButton.Location = new Point(285, 454);
+            draftButton.Font = new Font("SF Pro Display", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            draftButton.ForeColor = Color.WhiteSmoke;
+            draftButton.Location = new Point(356, 540);
             draftButton.Name = "draftButton";
-            draftButton.Size = new Size(101, 45);
+            draftButton.Size = new Size(128, 45);
             draftButton.TabIndex = 3;
             draftButton.Text = "Save as draft";
-            draftButton.UseVisualStyleBackColor = true;
+            draftButton.UseVisualStyleBackColor = false;
             // 
             // EditForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(505, 511);
+            BackColor = Color.FromArgb(39, 49, 70);
+            ClientSize = new Size(630, 597);
             Controls.Add(draftButton);
             Controls.Add(confirmButton);
             Controls.Add(groupBox);

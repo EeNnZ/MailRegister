@@ -12,7 +12,7 @@ namespace MailRegisterClient
         static HttpHelper()
         {
             Client = new HttpClient();
-            Client.BaseAddress = new Uri("http://localhost:3517/api/");
+            Client.BaseAddress = new Uri("http://localhost:5000/api/");
             Client.DefaultRequestHeaders.Accept.Clear();
             Client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
         }
