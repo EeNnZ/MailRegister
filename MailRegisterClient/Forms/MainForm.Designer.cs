@@ -40,8 +40,10 @@
             checkDraftsButton = new Button();
             dataGridView = new DataGridView();
             label1 = new Label();
+            waitPictureBox = new PictureBox();
             statusStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)waitPictureBox).BeginInit();
             SuspendLayout();
             // 
             // registerButton
@@ -192,12 +194,24 @@
             label1.TabIndex = 7;
             label1.Text = "Mails";
             // 
+            // waitPictureBox
+            // 
+            waitPictureBox.Image = Properties.Resources.wait_ring;
+            waitPictureBox.Location = new Point(425, 254);
+            waitPictureBox.Name = "waitPictureBox";
+            waitPictureBox.Size = new Size(141, 42);
+            waitPictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+            waitPictureBox.TabIndex = 8;
+            waitPictureBox.TabStop = false;
+            waitPictureBox.Visible = false;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(39, 49, 70);
             ClientSize = new Size(990, 551);
+            Controls.Add(waitPictureBox);
             Controls.Add(label1);
             Controls.Add(dataGridView);
             Controls.Add(checkDraftsButton);
@@ -211,6 +225,7 @@
             statusStrip.ResumeLayout(false);
             statusStrip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridView).EndInit();
+            ((System.ComponentModel.ISupportInitialize)waitPictureBox).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -225,5 +240,6 @@
         private ToolStripStatusLabel toolStripStatusLabel;
         private DataGridView dataGridView;
         private Label label1;
+        private PictureBox waitPictureBox;
     }
 }

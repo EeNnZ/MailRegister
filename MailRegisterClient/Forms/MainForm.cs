@@ -375,6 +375,8 @@ namespace MailRegisterClient
 
         private async Task InitializeLocalCollectoins()
         {
+            dataGridView.Visible = false;
+            waitPictureBox.Visible = true;
             DisableButtons();
 
             var employees = GetEmployees();
@@ -401,6 +403,8 @@ namespace MailRegisterClient
             toolStripStatusLabel.Text = "Ready";
 
             EnableButtons();
+            waitPictureBox.Visible = false;
+            dataGridView.Visible = true;
         }
         #endregion
 
