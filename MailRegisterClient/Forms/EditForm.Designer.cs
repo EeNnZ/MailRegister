@@ -155,6 +155,7 @@
             // bodyTextBox
             // 
             bodyTextBox.BackColor = Color.FromArgb(39, 49, 70);
+            bodyTextBox.ForeColor = Color.WhiteSmoke;
             bodyTextBox.Location = new Point(88, 264);
             bodyTextBox.Multiline = true;
             bodyTextBox.Name = "bodyTextBox";

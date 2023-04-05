@@ -46,6 +46,7 @@
             // 
             // registerButton
             // 
+            registerButton.Anchor = AnchorStyles.None;
             registerButton.BackColor = Color.FromArgb(61, 165, 244);
             registerButton.FlatAppearance.BorderColor = Color.FromArgb(64, 0, 64);
             registerButton.FlatAppearance.BorderSize = 2;
@@ -62,6 +63,7 @@
             // 
             // modifyButton
             // 
+            modifyButton.Anchor = AnchorStyles.None;
             modifyButton.BackColor = Color.FromArgb(61, 165, 244);
             modifyButton.FlatAppearance.BorderColor = Color.FromArgb(64, 0, 64);
             modifyButton.FlatAppearance.BorderSize = 2;
@@ -78,6 +80,7 @@
             // 
             // deleteButton
             // 
+            deleteButton.Anchor = AnchorStyles.None;
             deleteButton.BackColor = Color.FromArgb(34, 36, 62);
             deleteButton.FlatAppearance.BorderColor = Color.Brown;
             deleteButton.FlatAppearance.BorderSize = 2;
@@ -94,7 +97,7 @@
             // 
             // statusStrip
             // 
-            statusStrip.BackColor = Color.FromArgb(39, 49, 70);
+            statusStrip.BackColor = Color.FromArgb(29, 36, 62);
             statusStrip.Font = new Font("SF Pro Display", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
             statusStrip.Items.AddRange(new ToolStripItem[] { toolStripStatusLabel });
             statusStrip.Location = new Point(0, 529);
@@ -137,9 +140,9 @@
             dataGridViewCellStyle1.SelectionBackColor = Color.FromArgb(19, 24, 41);
             dataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText;
             dataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom;
             dataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView.BackgroundColor = Color.FromArgb(39, 49, 70);
-            dataGridView.BorderStyle = BorderStyle.None;
             dataGridView.CellBorderStyle = DataGridViewCellBorderStyle.None;
             dataGridView.ColumnHeadersBorderStyle = DataGridViewHeaderBorderStyle.None;
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
@@ -160,7 +163,7 @@
             dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
             dataGridView.DefaultCellStyle = dataGridViewCellStyle3;
             dataGridView.EnableHeadersVisualStyles = false;
-            dataGridView.Location = new Point(12, 60);
+            dataGridView.Location = new Point(0, 60);
             dataGridView.MultiSelect = false;
             dataGridView.Name = "dataGridView";
             dataGridView.ReadOnly = true;
@@ -175,7 +178,7 @@
             dataGridView.RowHeadersDefaultCellStyle = dataGridViewCellStyle4;
             dataGridView.RowTemplate.Height = 50;
             dataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridView.Size = new Size(966, 420);
+            dataGridView.Size = new Size(990, 420);
             dataGridView.TabIndex = 6;
             // 
             // label1
